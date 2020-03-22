@@ -1,0 +1,26 @@
+{% extends 'base/base.html' %}
+{% block body_block %}
+
+<div class="col-sm-5 mx-auto p-3">
+
+    {% for post in posts reversed %}
+    <div class="card my-5">
+        <div class="card-header">
+            <strong>{{post.author}}</strong>
+            {% if request.user == post.author %}
+            <a href="{% url 'post:update' post.id %}" class="ml-auto btn btn-primary">edit</a>
+            <a href="{% url 'post:delete' post.id %}" class="ml-auto btn btn-danger">delete</a>
+            {% endif %}
+        </div>
+        {% if post.img %}
+        <div class="card-body p-0">
+            <img src="{{post.img.url}}" alt="" class="card-img-top">
+        </div>
+        {% endif %}
+        <div class="card-footer">
+            {{post.post_desc}}
+        </div>
+    </div>
+    {%endfor%}
+</div>
+{%endblock%}

@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 # Create your models here.
 
 # for user creation we are using default USER model
@@ -21,6 +23,11 @@ class user_additional_info(models.Model):
 
     def __str__(self):
         return self.user.username
+
+# automatically delete media when user is deleted
+@receiver(post_delete, sender=user_additional_info)
+def submission_delete(sender, instance, **kwargs):
+    instance.profile_pic.delete(False)
 
 
 class follow(models.Model):

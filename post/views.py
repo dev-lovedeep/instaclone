@@ -9,6 +9,7 @@ from django.urls import reverse, reverse_lazy
 class post_create_view(LoginRequiredMixin, CreateView):
     model = Post
     fields = ('img', 'post_desc')
+    success_url = reverse_lazy('feed:feed')
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -18,9 +19,9 @@ class post_create_view(LoginRequiredMixin, CreateView):
 class post_update_view(LoginRequiredMixin, UpdateView):
     model = Post
     fields = ('img', 'post_desc')
-
-    def get_absolute_url(self):
-        return reverse('post:create')
+    success_url = reverse_lazy('feed:feed')
+    # def get_absolute_url(self):
+    #     return reverse('feed:feed')
 
 
 class post_delete_view(LoginRequiredMixin, DeleteView):

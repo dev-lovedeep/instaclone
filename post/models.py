@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
+from user.models import user_additional_info
 
 # Create your models here.
 
@@ -13,5 +14,5 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('post:create')
 
-    def __str__(self):
-        return self.author.get_username()
+    # def __str__(self):
+    #     return self.author.get_username()

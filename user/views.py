@@ -5,24 +5,41 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from .signupform import user_signup_form
+from .forms import *
+from .models import *
 # Create your views here.
 
 
-class newuser(generic.CreateView):
-    model = User
-    template_name = 'user/signup.html'
-    form_class = user_signup_form
-    # fields = ('username', 'first_name', 'last_name', 'password', 'email')
-    success_url = '/accounts/login'
+def usersignup(request):
+    if request.method == "POST":
+        user_data = user_signup_form(data=request.POST)
+        user_additional_data = user_additional_info_form(data=request.POST)
+        if user_data.is_valid() and user_additional_data.is_valid():
+            user = user_data.save()
+            user.set_password(user.password)
+            user.save()
+
+            additional_data = user_additional_data.save(commit=False)
+            additional_data.user = user
+            if 'profile_pic' in request.FILES:
+                additional_data.profile_pic = request.FILES['profile_pic']
+            additional_data.save()
+
+            return HttpResponseRedirect(reverse('user:login'))
+        return HttpResponse("form is getting invalid")
+
+    else:
+
+        return render(request, 'user/signup.html', {
+            "user_basic": user_signup_form(),
+            "user_additional": user_additional_info_form()
+        })
 
 
 def userlogin(request):
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
-        print(username)
-        print(password)
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)

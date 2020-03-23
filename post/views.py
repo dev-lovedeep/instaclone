@@ -12,7 +12,6 @@ class post_create_view(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        print(form)
         return super().form_valid(form)
 
 

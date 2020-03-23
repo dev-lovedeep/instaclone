@@ -8,9 +8,19 @@ from django.urls import reverse
 # to implement following and follower
 
 
-class User(models.Model):
-    def get_absolute_url(self):
-        return reverse('user:login', kwargs={})
+# class User(models.Model):
+#     def get_absolute_url(self):
+#         return reverse('user:login', kwargs={})
+
+
+class user_additional_info(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_pic = models.ImageField(
+        upload_to='profile_pic', default='avatar.png')
+    bio = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.user.username
 
 
 class follow(models.Model):

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import generic
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import login, logout, authenticate
@@ -14,6 +15,7 @@ def usersignup(request):
     if request.method == "POST":
         user_data = user_signup_form(data=request.POST)
         user_additional_data = user_additional_info_form(data=request.POST)
+
         if user_data.is_valid() and user_additional_data.is_valid():
             user = user_data.save()
             user.set_password(user.password)
@@ -24,7 +26,6 @@ def usersignup(request):
             if 'profile_pic' in request.FILES:
                 additional_data.profile_pic = request.FILES['profile_pic']
             additional_data.save()
-
             return HttpResponseRedirect(reverse('user:login'))
         return HttpResponse("form is getting invalid")
 
@@ -41,6 +42,9 @@ def userlogin(request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
+        # print(get_user_model().objects.filter(
+        #     username=username).values("username")[0]["username"])
+
         if user:
             login(request, user)
             next_url = request.POST.get('next')
@@ -49,7 +53,10 @@ def userlogin(request):
             else:
                 return HttpResponseRedirect(reverse('feed:feed'))
         else:
-            return HttpResponse("invalid credentials")
+            if not get_user_model().objects.filter(username=username):
+                return HttpResponse("no accout with username {} exist".format(username))
+            else:
+                return HttpResponse("invalid credentials")
     else:
         if request.user.is_authenticated:
             return HttpResponseRedirect(reverse('feed:feed'))

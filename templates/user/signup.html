@@ -4,6 +4,8 @@
 <form action="{% url 'user:signup' %}" method="post" enctype="multipart/form-data" class="col-sm-4 mx-auto">
     {% csrf_token %}
     <p class="display-2 text-center">sign up</p>
+    {{user_basic.errors}}
+    {{user_additional.erros}}
     <div class="form-group">
         <label for="username">username:</label>
         {{user_basic.username}}

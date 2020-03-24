@@ -1,0 +1,17 @@
+{% extends 'base/base.html'%}
+{%block body_block%}
+<div class="container col-sm-6 mx-auto">
+    <p class="display-4 text-center">following</p>
+    {% for object in following %}
+    <div class="row">
+        <div class="col text-center">
+            <p>{{object.username}}</p>
+        </div>
+        <div class="col text-center"><a href="{% url 'user:unfollow' object.username %}"
+                class="btn btn-primary">unfollow</a></div>
+    </div>
+
+
+    {%endfor%}
+</div>
+{%endblock%}

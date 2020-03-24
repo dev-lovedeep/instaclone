@@ -1,0 +1,18 @@
+{% extends 'base/base.html'%}
+{%block body_block%}
+<div class="container col-sm-6 mx-auto">
+    <p class="display-4 text-center">followers</p>
+    {% for follower in followers %}
+    <div class="row">
+        <div class="col text-center">
+            <p>{{follower.username}}</p>
+        </div>
+        <div class="col text-center"><a href="{% url 'user:follow' follower.username %}"
+                class="btn btn-primary">follow</a></div>
+    </div>
+
+
+    {%endfor%}
+</div>
+
+{%endblock%}

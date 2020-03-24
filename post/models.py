@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
-from user.models import user_additional_info
+# from user.models import user_additional_info
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 

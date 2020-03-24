@@ -15,6 +15,9 @@
         <ul class="navbar-nav ml-auto text-uppercase">
             <!-- <li class="nav-item"><a href="{%url 'user:login'%}" class="nav-link text-light">login</a></li> -->
             {% if user.is_authenticated %}
+            <li class="nav-item">
+                <p class="nav-link text-light">{{user.username}}</p>
+            </li>
             <li class="nav-item"><a href="{%url 'post:create'%}" class="nav-link text-light">create post</a></li>
             <li class="nav-item"><a href="{%url 'user:logout'%}" class="nav-link text-light">logout</a></li>
             {% else %}

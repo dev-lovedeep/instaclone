@@ -1,1 +1,1 @@
-web: gunicorn tweter.wsgi --log-file -
+web: gunicorn follow.wsgi --log-file -

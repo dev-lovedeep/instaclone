@@ -34,6 +34,6 @@ class user_additional_info_form(forms.ModelForm):
         # exclude = ['user']
         widgets = {
             # 'profile_pic': forms.ImageField(),
-            'bio': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'bio'}),
+            'bio': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'bio (optional)'}),
 
         }

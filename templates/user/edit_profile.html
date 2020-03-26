@@ -1,0 +1,16 @@
+{% extends 'base/base.html'%}
+{% load crispy_forms_tags %}
+{%block body_block %}
+<div class="container col-sm-5 mx-auto p-3 text-center">
+    <p class="display-4 text-capitalize my-3">update profile</p>
+    <img src="{{form.instance.profile_pic.url}}" alt="user profile pic"
+        style="height:200px;width: 200px;border-radius: 50%;">
+    <form action="" enctype="multipart/form-data" method="post">
+        {%csrf_token%}
+        {{form|crispy}}
+
+        <input type="submit" value="update" class="btn btn-primary btn-block">
+    </form>
+</div>
+
+{%endblock %}

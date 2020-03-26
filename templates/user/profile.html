@@ -1,58 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base/base.html'%}
+{%block body_block %}
+<div class="container bg-light">
+    <div class="row py-5 mx-auto">
+        <div class="col text-center">
+            <img src="{{user_profile.profile_pic.url}}" alt="user profile pic"
+                style="height:200px;width: 200px;border-radius: 50%;">
+        </div>
+        <div class="col">
+            <div class="d-flex">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>{{user.user.username}}</title>
-</head>
+                <p class="h1 font-weight-light">{{user_profile.user.username}}</p>
 
-<body>
+                {% if request.user == user_profile.user%}
+                <p>
+
+                    <a href="{% url 'user:edit_profile' user_profile.user.username%}"
+                        class="btn btn-primary mt-2 mx-3">edit profile</a>
+                </p>
+                {%else%}
+                {% if request.user in followers%}
+                <p>
+
+                    <a href="{% url 'user:unfollow' user_profile.user.username%}"
+                        class="btn btn-primary mt-2 mx-3">unfollow</a>
+                </p>
+                {%else%}
+                {%if request.user in following%}
+                <p>
+
+                    <a href="{% url 'user:follow' user_profile.user.username%}" class="btn btn-primary mt-2 mx-3">follow
+                        back</a>
+                </p>
+                {%else%}
+                <p>
+
+                    <a href="{% url 'user:follow' user_profile.user.username%}"
+                        class="btn btn-primary mt-2 mx-3">follow</a>
+                </p>
+                {%endif%}
+                {%endif%}
+                {%endif%}
 
 
-    <div class="container">
-        <div class="row">
-            <div class="col text-center">
-                <img src="{{user.profile_pic.url}}" alt="user profile pic" class=" img-fluid" width="250px"
-                    height="250px" style="border-radius: 100%;">
             </div>
-            <div class="col">
-                <p class="display-4">{{user.user.username}}</p>
-                <p>{{user.user.is_authenticated}}</p>
-                <pre>{{user.bio}}</pre>
+
+            <div class="d-flex flex-row justify-content-start my-4">
+                <p class="mr-5"><span class="font-weight-bold">{{posts.count}} </span>posts</p>
+                <a href="{% url 'user:followers_list' user_profile.user.username %}" class="mr-5"
+                    style="color:black !important;">
+                    <p><span class="font-weight-bold">{{user_profile.follower.count}} </span>followers</p>
+                </a>
+                <a href="{% url 'user:following_list' user_profile.user.username %}" class="mr-5"
+                    style="color:black !important;">
+
+                    <p class="mr-5"><span class="font-weight-bold">{{user_profile.following.count}}</span> following</p>
+                </a>
+            </div>
+            <div class="">
+                <p class="h5 font-weight-bold text-capitalize">{{user_profile.user.get_full_name}}</p>
+                <pre class="h5 font-weight-light" style="overflow:hidden">{{user_profile.bio}}</pre>
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="col-sm-5 mx-auto p-3">
+</div>
+<div class="container mt-5">
+    <div class="col-sm-5 mx-auto p-3">
 
-            {% for post in posts reversed %}
-            <div class="card my-5">
-                <div class="card-header">
-                    <!-- <img src="{{user.1.profile_pic.url}}" alt="" style="width: 15%;border-radius: 50%;"> -->
-                    <strong>{{post.author}}</strong>
-                    {% if request.user == post.author %}
-                    <span class="float-right">
+        {% for post in posts reversed %}
+        <div class="card my-5">
+            <div class="card-header">
+                <img src="{{user_profile.profile_pic.url}}" alt="" style="height:40px;width: 40px;border-radius: 50%;">
+                <strong>{{post.author}}</strong>
+                {% if request.user == post.author %}
+                <span class="float-right">
 
-                        <a href="{% url 'post:update' post.id %}" class="btn btn-primary">edit</a>
-                        <a href="{% url 'post:delete' post.id %}" class=" btn btn-danger">delete</a>
-                    </span>
-                    {% endif %}
-                </div>
-                {% if post.img %}
-                <div class="card-body p-0">
-                    <img src="{{post.img.url}}" alt="" class="card-img-top">
-                </div>
+                    <a href="{% url 'post:update' post.id %}" class="btn btn-primary">edit</a>
+                    <a href="{% url 'post:delete' post.id %}" class=" btn btn-danger">delete</a>
+                </span>
                 {% endif %}
-                <div class="card-footer">
-                    {{post.post_desc}}
-                </div>
             </div>
-            {%endfor%}
+            {% if post.img %}
+            <div class="card-body p-0">
+                <img src="{{post.img.url}}" alt="" class="card-img-top">
+            </div>
+            {% endif %}
+            <div class="card-footer">
+                {{post.post_desc}}
+            </div>
         </div>
+        {%endfor%}
     </div>
-</body>
+</div>
+{% endblock %}
+<!-- </body>
 
-</html>
+</html> -->

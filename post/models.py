@@ -13,6 +13,9 @@ class Post(models.Model):
     post_desc = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
+    def __str__(self):
+        return self.author.username
+
     # def get_absolute_url(self):
     #     return reverse('post:create')
 

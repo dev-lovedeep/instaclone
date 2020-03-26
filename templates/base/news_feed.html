@@ -1,13 +1,32 @@
 {% extends 'base/base.html' %}
 {% block body_block %}
+<style>
+    .horizontal-scroll {
+        overflow: auto;
+        flex-wrap: nowrap;
+    }
+
+    /* Hide scrollbar modern browsers */
+    .horizontal-scroll::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide scrollbar for IE and Edge */
+    .horizontal-scroll {
+        -ms-overflow-style: none;
+    }
+</style>
 
 <div class="col-sm-5 mx-auto p-3">
 
     {% for post in posts reversed %}
+    {%if post.author in logged_in_user_following_list or post.author == request.user %}
     <div class="card my-5">
         <div class="card-header">
             <!-- <img src="{{user.1.profile_pic.url}}" alt="" style="width: 15%;border-radius: 50%;"> -->
-            <strong>{{post.author}}</strong>
+            <a href="{%url 'user:profile' post.author%}">
+                <strong>{{post.author}}</strong>
+            </a>
             {% if request.user == post.author %}
             <span class="float-right">
 
@@ -18,13 +37,47 @@
         </div>
         {% if post.img %}
         <div class="card-body p-0">
-            <img src="{{post.img.url}}" alt="" class="card-img-top">
+            <a href="{{post.img.url}}">
+                <img src="{{post.img.url}}" alt="" class="card-img-top">
+            </a>
         </div>
         {% endif %}
         <div class="card-footer">
             {{post.post_desc}}
         </div>
     </div>
+    {% endif %}
     {%endfor%}
+
+
+    <div class="container border border-default pb-5">
+        <p class="text-center h1 font-weight-normal my-4">follow people to see their posts</p>
+
+        <div class="row d-flex align-items-stretch justify-content-start horizontal-scroll">
+            {% for user in all_users %}
+            {% if user.user not in logged_in_user_following_list and user.user != request.user %}
+            <div class="card text-center mx-2 col-xs-4" style="min-width:40%">
+                <!-- <div class="card text-center"> -->
+                <div class="card-body">
+                    <a href="{% url 'user:profile' user.user.username%}">
+                        <img src="{{user.profile_pic.url}}" alt=""
+                            style="max-width: 80%;max-height:15vh;border-radius:50%;">
+                        <p class="font-weight-bold mt-3">{{user.user.username}}</p>
+                    </a>
+                </div>
+                <div class="card-footer">
+                    {% if user.user in logged_in_user_follower_list %}
+                    <a href="{% url 'user:follow' user.user.username%}" class="btn btn-primary btn-block">follow
+                        back</a>
+                    {%else%}
+                    <a href="{% url 'user:follow' user.user.username%}" class="btn btn-primary btn-block">follow</a>
+                    {% endif %}
+                </div>
+                <!-- </div> -->
+            </div>
+            {%endif%}
+            {%endfor%}
+        </div>
+    </div>
 </div>
 {%endblock%}

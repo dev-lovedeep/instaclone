@@ -2,17 +2,39 @@
 {%block body_block%}
 <div class="container col-sm-6 mx-auto">
     <p class="display-4 text-center">followers</p>
-    {% for follower in followers %}
+    {% for follower in user_follower_list %}
     <div class="row">
-        <div class="col text-center">
-            <p>{{follower.username}}</p>
+        <div class="col text-center my-auto">
+            <p class="my-auto">
+                <a href="{%url 'user:profile' follower.username%}">
+                    {{follower.username}}
+                </a>
+            </p>
         </div>
-        <div class="col text-center"><a href="{% url 'user:follow' follower.username %}"
-                class="btn btn-primary">follow</a></div>
+        <div class="col text-center">
+
+            {% if follower in logged_in_user_following_list%}
+            <p>
+
+                <a href="{% url 'user:unfollow' follower.username%}" class="btn btn-primary mt-2 mx-3">unfollow</a>
+            </p>
+            {%else%}
+            {%if follower in logged_in_user_follower_list %}
+            <p>
+
+                <a href="{% url 'user:follow' follower.username%}" class="btn btn-primary mt-2 mx-3">follow
+                    back</a>
+            </p>
+            {%else%}
+            <p>
+
+                <a href="{% url 'user:follow' follower.username%}" class="btn btn-primary mt-2 mx-3">follow</a>
+            </p>
+            {%endif%}
+            {%endif%}
+
+        </div>
+        {%endfor%}
     </div>
 
-
-    {%endfor%}
-</div>
-
-{%endblock%}
+    {%endblock%}

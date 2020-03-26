@@ -113,7 +113,9 @@ class edit_user_profile(LoginRequiredMixin, generic.UpdateView):
 # def user_follow(request, username, calling_page_url):
 
 @login_required
-def user_follow(request, username):
+def user_follow(request):
+    username = request.POST.get('user_to_follow')
+    calling_page_url = request.POST.get('calling_page')
     user_to_follow = get_object_or_404(User, username=username)
 
     user_to_follow_profile = get_object_or_404(
@@ -130,13 +132,15 @@ def user_follow(request, username):
     user_to_follow_profile.save()
     logged_in_user_profile.save()
     print(username)
-    return HttpResponseRedirect(reverse('user:profile', kwargs={"username": username}))
+    print(calling_page_url)
+    return HttpResponseRedirect(calling_page_url)
     # return HttpResponseRedirect(reverse('user:followers_list'))
 
 
-# def user_unfollow(request, username, calling_page_url):
 @login_required
-def user_unfollow(request, username):
+def user_unfollow(request):
+    username = request.POST.get('user_to_unfollow')
+    calling_page_url = request.POST.get('calling_page')
     user_to_unfollow = get_object_or_404(User, username=username)
     user_to_unfollow_profile = get_object_or_404(
         user_additional_info, user=user_to_unfollow)
@@ -153,7 +157,8 @@ def user_unfollow(request, username):
     user_to_unfollow_profile.save()
     logged_in_user_profile.save()
     print(username)
-    return HttpResponseRedirect(reverse('user:profile', kwargs={"username": username}))
+    print(calling_page_url)
+    return HttpResponseRedirect(calling_page_url)
 
 
 class followers_list(LoginRequiredMixin, generic.ListView):
@@ -164,7 +169,7 @@ class followers_list(LoginRequiredMixin, generic.ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        #logged in user
+        # logged in user
         logged_in_user = get_object_or_404(User, username=self.request.user)
         logged_in_user_profile = get_object_or_404(
             user_additional_info, user=logged_in_user)
@@ -187,7 +192,7 @@ class following_list(LoginRequiredMixin, generic.ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        #logged in user
+        # logged in user
         logged_in_user = get_object_or_404(User, username=self.request.user)
         logged_in_user_profile = get_object_or_404(
             user_additional_info, user=logged_in_user)

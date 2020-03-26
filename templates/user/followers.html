@@ -3,7 +3,7 @@
 <div class="container col-sm-6 mx-auto">
     <p class="display-4 text-center">followers</p>
     {% for follower in user_follower_list %}
-    <div class="row">
+    <div class="row bg-light">
         <div class="col text-center my-auto">
             <p class="my-auto">
                 <a href="{%url 'user:profile' follower.username%}">
@@ -15,26 +15,40 @@
 
             {% if follower in logged_in_user_following_list%}
             <p>
+                <form action="{% url 'user:unfollow'%}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="calling_page" value="{{request.path}}">
+                    <input type="hidden" name="user_to_unfollow" value="{{follower.username}}">
+                    <input type="submit" value="unfollow" class="btn btn-primary mt-2 mx-3">
+                </form>
 
-                <a href="{% url 'user:unfollow' follower.username%}" class="btn btn-primary mt-2 mx-3">unfollow</a>
             </p>
             {%else%}
             {%if follower in logged_in_user_follower_list %}
             <p>
 
-                <a href="{% url 'user:follow' follower.username%}" class="btn btn-primary mt-2 mx-3">follow
-                    back</a>
+                <form action="{% url 'user:follow'%}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="calling_page" value="{{request.path}}">
+                    <input type="hidden" name="user_to_follow" value="{{follower.username}}">
+                    <input type="submit" value="follow back" class="btn btn-primary mt-2 mx-3">
+                </form>
             </p>
             {%else%}
             <p>
 
-                <a href="{% url 'user:follow' follower.username%}" class="btn btn-primary mt-2 mx-3">follow</a>
+                <form action="{% url 'user:follow'%}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="calling_page" value="{{request.path}}">
+                    <input type="hidden" name="user_to_follow" value="{{follower.username}}">
+                    <input type="submit" value="follow" class="btn btn-primary mt-2 mx-3">
+                </form>
             </p>
             {%endif%}
             {%endif%}
 
         </div>
-        {%endfor%}
     </div>
+    {%endfor%}
 
     {%endblock%}

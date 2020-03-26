@@ -21,21 +21,33 @@
                 {% if request.user in followers%}
                 <p>
 
-                    <a href="{% url 'user:unfollow' user_profile.user.username%}"
-                        class="btn btn-primary mt-2 mx-3">unfollow</a>
+                    <form action="{% url 'user:unfollow'%}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="calling_page" value="{{request.path}}">
+                        <input type="hidden" name="user_to_unfollow" value="{{user_profile.user.username}}">
+                        <input type="submit" value="unfollow" class="btn btn-primary mt-2 mx-3">
+                    </form>
                 </p>
                 {%else%}
                 {%if request.user in following%}
                 <p>
 
-                    <a href="{% url 'user:follow' user_profile.user.username%}" class="btn btn-primary mt-2 mx-3">follow
-                        back</a>
+                    <form action="{% url 'user:follow'%}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="calling_page" value="{{request.path}}">
+                        <input type="hidden" name="user_to_follow" value="{{user_profile.user.username}}">
+                        <input type="submit" value="follow back" class="btn btn-primary mt-2 mx-3">
+                    </form>
                 </p>
                 {%else%}
                 <p>
 
-                    <a href="{% url 'user:follow' user_profile.user.username%}"
-                        class="btn btn-primary mt-2 mx-3">follow</a>
+                    <form action="{% url 'user:follow'%}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="calling_page" value="{{request.path}}">
+                        <input type="hidden" name="user_to_follow" value="{{user_profile.user.username}}">
+                        <input type="submit" value="follow" class="btn btn-primary mt-2 mx-3">
+                    </form>
                 </p>
                 {%endif%}
                 {%endif%}

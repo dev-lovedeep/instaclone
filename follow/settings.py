@@ -28,7 +28,7 @@ SECRET_KEY = '*1^rw=ro7cofggt-p7$sty-phkzzs%^87r%(s^vo%oiw&efp3w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['tweter.herokuapp.com']
 
 
 # Application definition

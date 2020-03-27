@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- font awesome icons -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <title>tweter</title>
 </head>
 
@@ -18,8 +21,10 @@
             <!-- <li class="nav-item"><a href="{%url 'user:login'%}" class="nav-link text-light">login</a></li> -->
             {% if user.is_authenticated %}
 
-            <li class="nav-item"><a href="{%url 'user:profile' user.username%}"
-                    class="nav-link text-light">{{user.username}}</a></li>
+            <li class="nav-item"><a href="{%url 'feed:feed'%}" class="nav-link text-light"><i
+                        class="fa fa-newspaper-o mr-2"></i>NewsFeed</a></li>
+            <li class="nav-item"><a href="{%url 'user:profile' user.username%}" class="nav-link text-light"><i
+                        class="fa fa-user-circle mr-2"></i>{{user.username}}</a></li>
             <li class="nav-item"><a href="{%url 'post:create'%}" class="nav-link text-light">create post</a></li>
             <li class="nav-item"><a href="{%url 'user:logout'%}" class="nav-link text-light">logout</a></li>
             {% else %}

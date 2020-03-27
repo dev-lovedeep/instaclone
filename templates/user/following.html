@@ -3,8 +3,9 @@
 <div class="container col-sm-6 mx-auto">
     <p class="display-4 text-center">following</p>
     {% for object in user_following_list %}
+
     <div class="row">
-        <div class="col text-center my-auto">
+        <div class="col text-center my-auto font-weight-bold">
             <p class="my-auto">
                 <a href="{%url 'user:profile' object.username%}">
                     {{object.username}}
@@ -12,7 +13,12 @@
             </p>
         </div>
         <div class="col text-center">
+            {% if object == request.user %}
+            <p>
+                <p class="btn btn-primary text-primary bg-transparent btn-block mt-2 mx-3">you</p>
 
+            </p>
+            {%else%}
             {% if object in logged_in_user_following_list%}
             <p>
 
@@ -20,7 +26,7 @@
                     {% csrf_token %}
                     <input type="hidden" name="calling_page" value="{{request.path}}">
                     <input type="hidden" name="user_to_unfollow" value="{{object.username}}">
-                    <input type="submit" value="unfollow" class="btn btn-primary mt-2 mx-3">
+                    <input type="submit" value="unfollow" class="btn btn-primary btn-block mt-2 mx-3">
                 </form>
             </p>
             {%else%}
@@ -31,7 +37,7 @@
                     {% csrf_token %}
                     <input type="hidden" name="calling_page" value="{{request.path}}">
                     <input type="hidden" name="user_to_follow" value="{{object.username}}">
-                    <input type="submit" value="follow back" class="btn btn-primary mt-2 mx-3">
+                    <input type="submit" value="follow back" class="btn btn-primary btn-block mt-2 mx-3">
                 </form>
             </p>
             {%else%}
@@ -41,9 +47,10 @@
                     {% csrf_token %}
                     <input type="hidden" name="calling_page" value="{{request.path}}">
                     <input type="hidden" name="user_to_follow" value="{{object.username}}">
-                    <input type="submit" value="follow" class="btn btn-primary mt-2 mx-3">
+                    <input type="submit" value="follow" class="btn btn-primary btn-block mt-2 mx-3">
                 </form>
             </p>
+            {%endif%}
             {%endif%}
             {%endif%}
 

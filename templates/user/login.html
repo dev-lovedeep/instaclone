@@ -1,8 +1,18 @@
 {% extends 'base/base.html' %}
 {% block body_block %}
+
 <form action="{% url 'user:login' %}" method="post" class="col-sm-4 mx-auto">
     {% csrf_token %}
     <p class="display-2 text-center">Login</p>
+    {% for message in messages %}
+
+    <div class="alert alert-danger text-center">
+        <!-- <a class="close" href="#" data-dismiss="alert">×</a> -->
+
+        {{ message }}
+
+    </div>
+    {% endfor %}
     <input type="hidden" name="next" value='{{ request.GET.next }}'>
     <div class="form-group">
         <label for="username">username:</label>

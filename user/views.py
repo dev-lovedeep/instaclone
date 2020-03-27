@@ -3,6 +3,7 @@ from django.views import generic
 from django.contrib.auth.models import User
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -15,6 +16,8 @@ from django.conf import settings
 
 
 def usersignup(request):
+    user_data = user_signup_form()
+    user_additional_data = user_additional_info_form()
     if request.method == "POST":
         user_data = user_signup_form(data=request.POST)
         user_additional_data = user_additional_info_form(data=request.POST)
@@ -27,36 +30,28 @@ def usersignup(request):
             additional_data = user_additional_data.save(commit=False)
             additional_data.user = user
             additional_data.slug = slugify(additional_data.user.username)
+            print(slugify(additional_data.user.username))
             if 'profile_pic' in request.FILES:
                 additional_data.profile_pic = request.FILES['profile_pic']
             additional_data.save()
 
-            email = request.POST.get('email')
-            firstname = request.POST.get('first_name')
-            # email = user_data.get('email')
-            print(email)
-            subject = 'Thank you for registering'
-            message = 'Dear {},\n thanks for registering to our website\n lovedeep singh\nadmin'.format(
-                firstname)
-            email_from = settings.EMAIL_HOST_USER
-            recipient_list = [email]
-            print(send_mail(subject, message, email_from, recipient_list))
-
             return HttpResponseRedirect(reverse('user:login'))
-        return HttpResponse("form is getting invalid")
+        # return HttpResponse("form is getting invalid")
 
-    else:
-
-        return render(request, 'user/signup.html', {
-            "user_basic": user_signup_form(),
-            "user_additional": user_additional_info_form()
-        })
+    return render(request, 'user/signup.html', {
+        "user_basic": user_data,
+        "user_additional": user_additional_data
+    })
 
 
 def userlogin(request):
+
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
+        print(username)
+        print(password)
+
         user = authenticate(request, username=username, password=password)
         # print(get_user_model().objects.filter(
         #     username=username).values("username")[0]["username"])
@@ -69,16 +64,17 @@ def userlogin(request):
             else:
                 return HttpResponseRedirect(reverse('feed:feed'))
         else:
-            # if not get_user_model().objects.filter(username=username):
-            if not get_object_or_404(User, username=username):
-                return HttpResponse("no accout with username {} exist".format(username))
+            if User.objects.filter(username=username):
+                messages.error(request, 'invalid password')
             else:
-                return HttpResponse("invalid credentials")
-    else:
-        if request.user.is_authenticated:
-            return HttpResponseRedirect(reverse('feed:feed'))
-        else:
-            return render(request, "user/login.html", {})
+                messages.error(
+                    request, 'no user with username {} exist'.format(username))
+                return HttpResponseRedirect(reverse('user:login'))
+
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('feed:feed'))
+
+    return render(request, "user/login.html", {})
 
 
 class userprofile(LoginRequiredMixin, generic.ListView):

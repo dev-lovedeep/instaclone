@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'user',
     'post',
     'crispy_forms',
+    'whitenoise.runserver_nostatic',
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

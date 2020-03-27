@@ -29,11 +29,19 @@ def usersignup(request):
 
             additional_data = user_additional_data.save(commit=False)
             additional_data.user = user
-            additional_data.slug = slugify(additional_data.user.username)
-            print(slugify(additional_data.user.username))
             if 'profile_pic' in request.FILES:
                 additional_data.profile_pic = request.FILES['profile_pic']
             additional_data.save()
+            # sending mail to user
+            email = request.POST.get('email')
+            firstname = request.POST.get('first_name')
+            print(email)
+            subject = 'Thank you for registering'
+            message = 'Dear {},\nthanks for registering to our website\nLovedeep Singh\nADMIN'.format(
+                firstname)
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [email]
+            send_mail(subject, message, email_from, recipient_list)
 
             return HttpResponseRedirect(reverse('user:login'))
         # return HttpResponse("form is getting invalid")
@@ -68,7 +76,7 @@ def userlogin(request):
                 messages.error(request, 'invalid password')
             else:
                 messages.error(
-                    request, 'no user with username {} exist'.format(username))
+                    request, 'no user with username {} exist,username is case sensitive'.format(username))
                 return HttpResponseRedirect(reverse('user:login'))
 
     if request.user.is_authenticated:

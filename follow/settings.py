@@ -141,11 +141,9 @@ prod_db = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(prod_db)
 
 # signup mail settings
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_USE_TLS = True
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = os.environ.get('MAIL_ID')
-# EMAIL_HOST_PASSWORD = os.environ.get('MAIL_ID_PASSWORD')
-# print(EMAIL_HOST_USER)
-# print(EMAIL_HOST_PASSWORD)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get('MAIL_ID')
+EMAIL_HOST_PASSWORD = os.environ.get('MAIL_ID_PASSWORD')

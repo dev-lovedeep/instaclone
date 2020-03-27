@@ -23,7 +23,7 @@ class user_additional_info(models.Model):
         return self.user.username
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.user.username)
+        self.slug = self.user.username
         return super().save(*args, **kwargs)
 
 # automatically delete media when user is deleted

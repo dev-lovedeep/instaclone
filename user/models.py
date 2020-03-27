@@ -11,7 +11,7 @@ from django.utils.text import slugify
 class user_additional_info(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_pic = models.ImageField(
-        upload_to='profile_pic', default='profile_pic/Screenshot_8.png')
+        upload_to='profile_pic', default='profile_pic/avatar.png')
     bio = models.TextField(null=True, blank=True)
     following = models.ManyToManyField(
         User, related_name="following", default=None, blank=True)

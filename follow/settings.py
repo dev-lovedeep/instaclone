@@ -28,7 +28,7 @@ SECRET_KEY = '*1^rw=ro7cofggt-p7$sty-phkzzs%^87r%(s^vo%oiw&efp3w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['tweter.herokuapp.com']
+ALLOWED_HOSTS = ['tweter.herokuapp.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -127,7 +127,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = MEDIA_DIR
 
@@ -139,3 +139,13 @@ STATICFILES_DIRS = (
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 prod_db = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(prod_db)
+
+# signup mail settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get('MAIL_ID')
+EMAIL_HOST_PASSWORD = os.environ.get('MAIL_ID_PASSWORD')
+print(EMAIL_HOST_USER)
+print(EMAIL_HOST_PASSWORD)

@@ -9,6 +9,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.text import slugify
 from .forms import *
 from .models import *
+from django.core.mail import send_mail
+from django.conf import settings
 # Create your views here.
 
 
@@ -28,6 +30,18 @@ def usersignup(request):
             if 'profile_pic' in request.FILES:
                 additional_data.profile_pic = request.FILES['profile_pic']
             additional_data.save()
+
+            email = request.POST.get('email')
+            firstname = request.POST.get('first_name')
+            # email = user_data.get('email')
+            print(email)
+            subject = 'Thank you for registering'
+            message = 'Dear {},\n thanks for registering to our website\n lovedeep singh\nadmin'.format(
+                firstname)
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [email]
+            print(send_mail(subject, message, email_from, recipient_list))
+
             return HttpResponseRedirect(reverse('user:login'))
         return HttpResponse("form is getting invalid")
 

@@ -38,7 +38,7 @@
         {% if post.img %}
         <div class="card-body p-0">
             <a href="{{post.img.url}}">
-                <img src="{{post.img.url}}" alt="" class="card-img-top">
+                <img src="{{post.img.url}}" alt="user profile img" class="card-img-top">
             </a>
         </div>
         {% endif %}
@@ -60,7 +60,7 @@
                 <!-- <div class="card text-center"> -->
                 <div class="card-body">
                     <a href="{% url 'user:profile' user.user.username%}">
-                        <img src="{{user.profile_pic.url}}" alt=""
+                        <img src="{{user.profile_pic.url}}" alt="user profile img"
                             style="max-width: 80%;max-height:15vh;border-radius:50%;">
                         <p class="font-weight-bold mt-3">{{user.user.username}}</p>
                     </a>

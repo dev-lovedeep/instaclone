@@ -81,7 +81,8 @@
         {% for post in posts reversed %}
         <div class="card my-5">
             <div class="card-header">
-                <img src="{{user_profile.profile_pic.url}}" alt="" style="height:40px;width: 40px;border-radius: 50%;">
+                <img src="{{user_profile.profile_pic.url}}" alt="user profile img"
+                    style="height:40px;width: 40px;border-radius: 50%;">
                 <strong>{{post.author}}</strong>
                 {% if request.user == post.author %}
                 <span class="float-right">
@@ -93,7 +94,7 @@
             </div>
             {% if post.img %}
             <div class="card-body p-0">
-                <img src="{{post.img.url}}" alt="" class="card-img-top">
+                <img src="{{post.img.url}}" alt="user profile img" class="card-img-top">
             </div>
             {% endif %}
             <div class="card-footer">

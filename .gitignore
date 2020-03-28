@@ -2,3 +2,19 @@ todo
 db.sqlite3
 media
 db.sqlite3
+
+
+#do remember to add these also to your .gitignore file
+#virtual environments
+venv
+venv
+myenv
+virtualenv
+
+
+#editor config files
+.vscode
+
+#all .pyc files, they are useless to push on git
+*.pyc
+
